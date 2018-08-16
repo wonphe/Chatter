@@ -15,6 +15,9 @@ namespace 碎碎念
         private string _indexTempFile = "temp.ssn";
         private int _index;
 
+        private static string TEXT_READ = "朗读";
+        private static string TEXT_STOP = "停止";
+
         public FrmMain()
         {
             InitializeComponent();
@@ -33,12 +36,20 @@ namespace 碎碎念
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            while (this.Visible)
+            if (TEXT_STOP.Equals(btnStart.Text))
             {
-                Read(_index);
-                File.WriteAllText(_indexTempFile, Convert.ToString(++_index));
+                Stop();
+                btnStart.Text = TEXT_READ;
             }
-
+            else if (TEXT_READ.Equals(btnStart.Text))
+            {
+                do
+                {
+                    Read(_index);
+                    File.WriteAllText(_indexTempFile, Convert.ToString(++_index));
+                }
+                while (TEXT_STOP.Equals(btnStart.Text));
+            }
         }
 
         private void Read(int index)
@@ -51,7 +62,7 @@ namespace 碎碎念
             // 将中文转换为URL，格式为UTF-8
             text = HttpUtility.UrlEncode(text, System.Text.Encoding.GetEncoding("UTF-8"));
 
-            btnStart.Enabled = false;
+            btnStart.Text = TEXT_STOP;
             sslStatus.Text = $"正在播放: {_index} / {_lines.Length}";
 
             // string API_KEY = ConfigurationManager.AppSettings["API_KEY"].Trim();
@@ -70,11 +81,18 @@ namespace 碎碎念
             tsProgress.Maximum = _lines.Length;
             tsProgress.Value = _index;
             Delay(_player.Duration);
-            _player.StopT();
+            Stop();
+        }
+
+        private void Stop()
+        {
+            if (_player != null)
+            {
+                _player.StopT();
+            }
             File.Delete(_path);
 
             sslStatus.Text = "";
-            btnStart.Enabled = true;
         }
 
         /// <summary>
@@ -145,11 +163,7 @@ namespace 碎碎念
 
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (_player != null)
-            {
-                _player.StopT();
-            }
-            File.Delete(_path);
+            Stop();
             Environment.Exit(0);
         }
 
