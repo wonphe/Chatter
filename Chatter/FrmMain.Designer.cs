@@ -32,9 +32,9 @@
             this.btnStart = new System.Windows.Forms.Button();
             this.txtText = new System.Windows.Forms.TextBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.sddChapter = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.sslStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.sslChapter = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,30 +65,36 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sddChapter,
             this.tsProgress,
-            this.sslStatus,
-            this.sslChapter});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 159);
+            this.sslStatus});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 158);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(384, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(384, 23);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // sddChapter
+            // 
+            this.sddChapter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.sddChapter.Image = ((System.Drawing.Image)(resources.GetObject("sddChapter.Image")));
+            this.sddChapter.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.sddChapter.Name = "sddChapter";
+            this.sddChapter.ShowDropDownArrow = false;
+            this.sddChapter.Size = new System.Drawing.Size(20, 21);
+            this.sddChapter.Text = "toolStripDropDownButton1";
+            this.sddChapter.Click += new System.EventHandler(this.sddChapter_Click);
             // 
             // tsProgress
             // 
             this.tsProgress.Name = "tsProgress";
-            this.tsProgress.Size = new System.Drawing.Size(100, 16);
+            this.tsProgress.Size = new System.Drawing.Size(100, 17);
             // 
             // sslStatus
             // 
             this.sslStatus.BackColor = System.Drawing.SystemColors.Control;
             this.sslStatus.Name = "sslStatus";
-            this.sslStatus.Size = new System.Drawing.Size(0, 17);
-            // 
-            // sslChapter
-            // 
-            this.sslChapter.Name = "sslChapter";
-            this.sslChapter.Size = new System.Drawing.Size(0, 17);
+            this.sslStatus.Size = new System.Drawing.Size(0, 18);
             // 
             // FrmMain
             // 
@@ -118,6 +124,6 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel sslStatus;
         private System.Windows.Forms.ToolStripProgressBar tsProgress;
-        private System.Windows.Forms.ToolStripStatusLabel sslChapter;
+        private System.Windows.Forms.ToolStripDropDownButton sddChapter;
     }
 }

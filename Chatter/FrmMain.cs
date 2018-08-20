@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using System.Web;
 using System.Configuration;
 using System.Text.RegularExpressions;
+using Chatter;
+using System.Collections.Generic;
 
 namespace 碎碎念
 {
@@ -14,7 +16,10 @@ namespace 碎碎念
         private MP3Player _player;
         private string _path = "./temp.mp3";
         private string _indexTempFile = "./temp.ssn";
+        private string _fileName = "./temp.txt";
         private int _index;
+        private int _chapterIndex;
+        private SortedList<int, string> _chapterList;
 
         private static string TEXT_READ = "朗读";
         private static string TEXT_STOP = "停止";
@@ -26,16 +31,66 @@ namespace 碎碎念
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
-            string fileName = ConfigurationManager.AppSettings["fileName"].Trim();
-            _lines = File.ReadAllLines(fileName);
             if (!File.Exists(_indexTempFile))
             {
                 File.Create(_indexTempFile).Close();
                 File.WriteAllText(_indexTempFile, "0");
             }
+
+            if (!File.Exists(_fileName))
+            {
+                using (var frm = new OpenFileDialog())
+                {
+                    frm.Filter = "文本文档|*.txt";
+                    frm.Title = "选择 txt 文档的路径";
+                    if (frm.ShowDialog() == DialogResult.OK)
+                    {
+                        File.Copy(frm.FileName, _fileName, true);
+                    }
+                    else
+                    {
+                        Environment.Exit(0);
+                    }
+                }
+            }
+
+            _lines = File.ReadAllLines(_fileName);
+
+            // 加载目录
+            _chapterList = new SortedList<int, string>();
+            for (int i = 0; i < _lines.Length; i++)
+            {
+                string text = _lines[i];
+
+                string regStr = ConfigurationManager.AppSettings["chapterRegex"].Trim();
+                var reg = new Regex(regStr);
+                var match = reg.Match(text);
+                if (match.Success)
+                {
+                    _chapterList.Add(i, text);
+                }
+            }
+
+            initForm();
+        }
+
+        private void initForm()
+        {
             var temp = File.ReadAllLines(_indexTempFile)[0];
             _index = string.IsNullOrEmpty(temp) ? 0 : Convert.ToInt32(temp);
+
             txtText.Text = _lines[_index];
+
+            if (_chapterList.Keys[0] <= _index)
+            {
+                _chapterIndex = _index;
+                while (!_chapterList.ContainsKey(_chapterIndex))
+                {
+                    _chapterIndex = _chapterIndex - 1;
+                }
+                Text = _lines[_chapterIndex];
+            }
+
             tsProgress.Maximum = _lines.Length;
             tsProgress.Value = _index;
         }
@@ -63,13 +118,13 @@ namespace 碎碎念
             string text = _lines[index];
             if (string.IsNullOrEmpty(text) || text == "\0") return;
 
-            // 使用正则表达式，抽取章节标题到状态栏
+            // 使用正则表达式，抽取章节标题到标题栏
             string regStr = ConfigurationManager.AppSettings["chapterRegex"].Trim();
             var reg = new Regex(regStr);
             var match = reg.Match(text);
             if (match.Success)
             {
-                sslChapter.Text = text;
+                Text = text;
             }
 
             txtText.Text = text;
@@ -208,5 +263,16 @@ namespace 碎碎念
         //}
         #endregion
 
+        private void sddChapter_Click(object sender, EventArgs e)
+        {
+            using (var frm = new FrmChapter(_chapterList, _chapterIndex))
+            {
+
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    initForm();
+                }
+            }
+        }
     }
 }
