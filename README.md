@@ -19,6 +19,8 @@
     <add key="pit" value="5"/>
     <!-- txt文件路径 -->
     <add key="fileName" value="./xxx.txt"/>
+	<!-- 章节正则表达式-->
+    <add key="chapterRegex" value="^第\d{4}章"/>
   </appSettings>
 </configuration>
 ```

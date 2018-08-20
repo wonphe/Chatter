@@ -4,6 +4,7 @@ using System.Net;
 using System.Windows.Forms;
 using System.Web;
 using System.Configuration;
+using System.Text.RegularExpressions;
 
 namespace 碎碎念
 {
@@ -12,7 +13,7 @@ namespace 碎碎念
         string[] _lines;
         private MP3Player _player;
         private string _path = "./temp.mp3";
-        private string _indexTempFile = "temp.ssn";
+        private string _indexTempFile = "./temp.ssn";
         private int _index;
 
         private static string TEXT_READ = "朗读";
@@ -27,6 +28,11 @@ namespace 碎碎念
         {
             string fileName = ConfigurationManager.AppSettings["fileName"].Trim();
             _lines = File.ReadAllLines(fileName);
+            if (!File.Exists(_indexTempFile))
+            {
+                File.Create(_indexTempFile).Close();
+                File.WriteAllText(_indexTempFile, "0");
+            }
             var temp = File.ReadAllLines(_indexTempFile)[0];
             _index = string.IsNullOrEmpty(temp) ? 0 : Convert.ToInt32(temp);
             txtText.Text = _lines[_index];
@@ -56,6 +62,15 @@ namespace 碎碎念
         {
             string text = _lines[index];
             if (string.IsNullOrEmpty(text) || text == "\0") return;
+
+            // 使用正则表达式，抽取章节标题到状态栏
+            string regStr = ConfigurationManager.AppSettings["chapterRegex"].Trim();
+            var reg = new Regex(regStr);
+            var match = reg.Match(text);
+            if (match.Success)
+            {
+                sslChapter.Text = text;
+            }
 
             txtText.Text = text;
 

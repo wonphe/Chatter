@@ -34,6 +34,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.sslStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.sslChapter = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,7 +66,8 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsProgress,
-            this.sslStatus});
+            this.sslStatus,
+            this.sslChapter});
             this.statusStrip1.Location = new System.Drawing.Point(0, 159);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(384, 22);
@@ -82,6 +84,11 @@
             this.sslStatus.BackColor = System.Drawing.SystemColors.Control;
             this.sslStatus.Name = "sslStatus";
             this.sslStatus.Size = new System.Drawing.Size(0, 17);
+            // 
+            // sslChapter
+            // 
+            this.sslChapter.Name = "sslChapter";
+            this.sslChapter.Size = new System.Drawing.Size(0, 17);
             // 
             // FrmMain
             // 
@@ -111,5 +118,6 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel sslStatus;
         private System.Windows.Forms.ToolStripProgressBar tsProgress;
+        private System.Windows.Forms.ToolStripStatusLabel sslChapter;
     }
 }
