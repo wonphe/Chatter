@@ -21,7 +21,7 @@ namespace Chatter
         private void lvList_DoubleClick(object sender, EventArgs e)
         {
             var line = int.Parse(lvList.SelectedItems[0].SubItems[1].Text);
-            File.WriteAllText(_indexTempFile, Convert.ToString(++line));
+            File.WriteAllText(_indexTempFile, Convert.ToString(line));
             DialogResult = DialogResult.OK;
             Close();
         }
