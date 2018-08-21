@@ -1,12 +1,13 @@
 # Chatter / 碎碎念
 一个纯粹的```txt小说```朗读工具，基于```百度语音合成```REST API
 
-## 使用说明
-打开文件 ```碎碎念.exe.config``` 按注释进行修改
-
 ## 截图
 ![snipaste_01](/snipaste/snipaste_01.png)
+
 ![snipaste_02](/snipaste/snipaste_02.png)
+
+## 使用说明
+打开文件 ```碎碎念.exe.config``` 按注释进行修改
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
