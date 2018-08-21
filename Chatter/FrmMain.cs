@@ -124,6 +124,7 @@ namespace 碎碎念
             var match = reg.Match(text);
             if (match.Success)
             {
+                _chapterIndex = index;
                 Text = text;
             }
 
@@ -272,6 +273,61 @@ namespace 碎碎念
                 {
                     initForm();
                 }
+            }
+        }
+
+        private void btnLast_Click(object sender, EventArgs e)
+        {
+            if ((_index - 1) >= 0)
+            {
+                File.WriteAllText(_indexTempFile, Convert.ToString(--_index));
+                initForm();
+            }
+            else
+            {
+                MessageBox.Show("当前已经是第一行，再没有啦！");
+            }
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            if ((_index + 1) < _lines.Length)
+            {
+                File.WriteAllText(_indexTempFile, Convert.ToString(++_index));
+                initForm();
+            }
+            else
+            {
+                MessageBox.Show("当前已经是最后一行，再没有啦！");
+            }
+        }
+
+        private void btnLastChapter_Click(object sender, EventArgs e)
+        {
+            if (_chapterList.IndexOfKey(_chapterIndex) > 0)
+            {
+                _chapterIndex = _chapterList.Keys[_chapterList.IndexOfKey(_chapterIndex) - 1];
+                File.WriteAllText(_indexTempFile, Convert.ToString(_chapterIndex));
+                initForm();
+            }
+            else
+            {
+                MessageBox.Show("当前已经是第一章，再没有啦！");
+            }
+
+        }
+
+        private void btnNextChapter_Click(object sender, EventArgs e)
+        {
+            if (_chapterList.IndexOfKey(_chapterIndex) < _chapterList.Count - 1)
+            {
+                _chapterIndex = _chapterList.Keys[_chapterList.IndexOfKey(_chapterIndex) + 1];
+                File.WriteAllText(_indexTempFile, Convert.ToString(_chapterIndex));
+                initForm();
+            }
+            else
+            {
+                MessageBox.Show("当前已经是最后一章，再没有啦！");
             }
         }
     }
