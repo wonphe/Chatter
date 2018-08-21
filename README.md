@@ -22,7 +22,7 @@
     <add key="spd" value="9"/>
     <!-- 音调，取值0-9，默认为5中语调 -->
     <add key="pit" value="5"/>
-	<!-- 章节正则表达式-->
+    <!-- 章节正则表达式-->
     <add key="chapterRegex" value="^第\d{4}章"/>
   </appSettings>
 </configuration>
