@@ -4,6 +4,10 @@
 ## 使用说明
 打开文件 ```碎碎念.exe.config``` 按注释进行修改
 
+## 截图
+![snipaste_01](/snipaste/snipaste_01.png)
+![snipaste_02](/snipaste/snipaste_02.png)
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
