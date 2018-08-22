@@ -57,15 +57,17 @@
             // 
             // txtText
             // 
+            this.txtText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtText.BackColor = System.Drawing.SystemColors.Window;
-            this.txtText.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtText.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.txtText.Location = new System.Drawing.Point(0, 0);
             this.txtText.Multiline = true;
             this.txtText.Name = "txtText";
             this.txtText.ReadOnly = true;
             this.txtText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtText.Size = new System.Drawing.Size(384, 211);
+            this.txtText.Size = new System.Drawing.Size(384, 189);
             this.txtText.TabIndex = 1;
             // 
             // statusStrip1
