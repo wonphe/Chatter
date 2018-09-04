@@ -162,6 +162,7 @@ namespace Chatter
         /// </summary>
         private void initForm()
         {
+            statusStrip1.Focus();
             var temp = File.ReadAllLines(_indexTempFile)[0];
             _index = string.IsNullOrEmpty(temp) ? 0 : Convert.ToInt32(temp);
 

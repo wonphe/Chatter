@@ -50,7 +50,7 @@
             this.btnStart.Location = new System.Drawing.Point(111, 3);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(40, 23);
-            this.btnStart.TabIndex = 0;
+            this.btnStart.TabIndex = 5;
             this.btnStart.Text = "朗读";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
@@ -68,7 +68,7 @@
             this.txtText.ReadOnly = true;
             this.txtText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtText.Size = new System.Drawing.Size(384, 189);
-            this.txtText.TabIndex = 1;
+            this.txtText.TabIndex = 2;
             // 
             // statusStrip1
             // 
@@ -79,7 +79,7 @@
             this.statusStrip1.Location = new System.Drawing.Point(0, 188);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(384, 23);
-            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // sddChapter
@@ -121,7 +121,7 @@
             this.btnNextChapter.Location = new System.Drawing.Point(209, 3);
             this.btnNextChapter.Name = "btnNextChapter";
             this.btnNextChapter.Size = new System.Drawing.Size(50, 23);
-            this.btnNextChapter.TabIndex = 3;
+            this.btnNextChapter.TabIndex = 7;
             this.btnNextChapter.Text = "下一章";
             this.btnNextChapter.UseVisualStyleBackColor = true;
             this.btnNextChapter.Click += new System.EventHandler(this.btnNextChapter_Click);
@@ -143,7 +143,7 @@
             this.btnNext.Location = new System.Drawing.Point(155, 3);
             this.btnNext.Name = "btnNext";
             this.btnNext.Size = new System.Drawing.Size(50, 23);
-            this.btnNext.TabIndex = 5;
+            this.btnNext.TabIndex = 6;
             this.btnNext.Text = "下一页";
             this.btnNext.UseVisualStyleBackColor = true;
             this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
@@ -160,7 +160,7 @@
             this.panel1.Location = new System.Drawing.Point(51, 155);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(263, 30);
-            this.panel1.TabIndex = 6;
+            this.panel1.TabIndex = 8;
             // 
             // FrmMain
             // 
