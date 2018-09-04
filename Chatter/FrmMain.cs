@@ -29,6 +29,7 @@ namespace 碎碎念
             InitializeComponent();
         }
 
+        #region 事件
         private void FrmMain_Load(object sender, EventArgs e)
         {
             if (!File.Exists(_indexTempFile))
@@ -74,6 +75,92 @@ namespace 碎碎念
             initForm();
         }
 
+        private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Stop();
+            Environment.Exit(0);
+        }
+
+        private void sddChapter_Click(object sender, EventArgs e)
+        {
+            // 打开目录窗口
+            using (var frm = new FrmChapter(_chapterList, _chapterIndex))
+            {
+
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    initForm();
+                }
+            }
+        }
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            PlayOrStop();
+        }
+
+        private void btnLast_Click(object sender, EventArgs e)
+        {
+            LastLine();
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            NextLine();
+        }
+
+        private void btnLastChapter_Click(object sender, EventArgs e)
+        {
+            LastChapter();
+        }
+
+        private void btnNextChapter_Click(object sender, EventArgs e)
+        {
+            NextChapter();
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            // 自定义快捷键
+            KeyEventArgs e = new KeyEventArgs(keyData);
+
+            // 空格键：朗读 / 停止
+            if (keyData == (Keys.Space))
+            {
+                PlayOrStop();
+            }
+
+            // 右方向键：下一页
+            if (keyData == (Keys.Right))
+            {
+                NextLine();
+            }
+
+            // 左方向键：上一页
+            if (keyData == (Keys.Left))
+            {
+                LastLine();
+            }
+
+            // Control + 右方向键：下一章
+            if (keyData == (Keys.Control | Keys.Right))
+            {
+                NextChapter();
+            }
+
+            // Control + 左方向键：上一章
+            if (keyData == (Keys.Control | Keys.Left))
+            {
+                LastChapter();
+            }
+            return false;
+        }
+        #endregion
+
+        #region 方法
+        /// <summary>
+        /// 初始化窗口
+        /// </summary>
         private void initForm()
         {
             var temp = File.ReadAllLines(_indexTempFile)[0];
@@ -95,24 +182,10 @@ namespace 碎碎念
             tsProgress.Value = _index;
         }
 
-        private void btnStart_Click(object sender, EventArgs e)
-        {
-            if (TEXT_STOP.Equals(btnStart.Text))
-            {
-                Stop();
-                btnStart.Text = TEXT_READ;
-            }
-            else if (TEXT_READ.Equals(btnStart.Text))
-            {
-                do
-                {
-                    Read(_index);
-                    File.WriteAllText(_indexTempFile, Convert.ToString(++_index));
-                }
-                while (TEXT_STOP.Equals(btnStart.Text));
-            }
-        }
-
+        /// <summary>
+        /// 朗读
+        /// </summary>
+        /// <param name="index">当前行数</param>
         private void Read(int index)
         {
             string text = _lines[index];
@@ -155,6 +228,9 @@ namespace 碎碎念
             Stop();
         }
 
+        /// <summary>
+        /// 停止朗读
+        /// </summary>
         private void Stop()
         {
             if (_player != null)
@@ -222,6 +298,10 @@ namespace 碎碎念
             }
         }
 
+        /// <summary>
+        /// 延时 mm 毫秒
+        /// </summary>
+        /// <param name="mm">毫秒</param>
         public static void Delay(int mm)
         {
             DateTime current = DateTime.Now;
@@ -232,10 +312,91 @@ namespace 碎碎念
             return;
         }
 
-        private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
+        /// <summary>
+        /// 朗读 / 停止
+        /// </summary>
+        private void PlayOrStop()
         {
-            Stop();
-            Environment.Exit(0);
+            if (TEXT_STOP.Equals(btnStart.Text))
+            {
+                Stop();
+                btnStart.Text = TEXT_READ;
+            }
+            else if (TEXT_READ.Equals(btnStart.Text))
+            {
+                do
+                {
+                    Read(_index);
+                    File.WriteAllText(_indexTempFile, Convert.ToString(++_index));
+                }
+                while (TEXT_STOP.Equals(btnStart.Text));
+            }
+        }
+
+        /// <summary>
+        /// 上一页 / 上一行
+        /// </summary>
+        private void LastLine()
+        {
+            if ((_index - 1) >= 0)
+            {
+                File.WriteAllText(_indexTempFile, Convert.ToString(--_index));
+                initForm();
+            }
+            else
+            {
+                MessageBox.Show("当前已经是第一行，再没有啦！");
+            }
+        }
+
+        /// <summary>
+        /// 下一页 / 下一行
+        /// </summary>
+        private void NextLine()
+        {
+            if ((_index + 1) < _lines.Length)
+            {
+                File.WriteAllText(_indexTempFile, Convert.ToString(++_index));
+                initForm();
+            }
+            else
+            {
+                MessageBox.Show("当前已经是最后一行，再没有啦！");
+            }
+        }
+
+        /// <summary>
+        /// 上一章
+        /// </summary>
+        private void LastChapter()
+        {
+            if (_chapterList.IndexOfKey(_chapterIndex) > 0)
+            {
+                _chapterIndex = _chapterList.Keys[_chapterList.IndexOfKey(_chapterIndex) - 1];
+                File.WriteAllText(_indexTempFile, Convert.ToString(_chapterIndex));
+                initForm();
+            }
+            else
+            {
+                MessageBox.Show("当前已经是第一章，再没有啦！");
+            }
+        }
+
+        /// <summary>
+        /// 下一章
+        /// </summary>
+        private void NextChapter()
+        {
+            if (_chapterList.IndexOfKey(_chapterIndex) < _chapterList.Count - 1)
+            {
+                _chapterIndex = _chapterList.Keys[_chapterList.IndexOfKey(_chapterIndex) + 1];
+                File.WriteAllText(_indexTempFile, Convert.ToString(_chapterIndex));
+                initForm();
+            }
+            else
+            {
+                MessageBox.Show("当前已经是最后一章，再没有啦！");
+            }
         }
 
         #region sdk方式
@@ -264,71 +425,6 @@ namespace 碎碎念
         //}
         #endregion
 
-        private void sddChapter_Click(object sender, EventArgs e)
-        {
-            using (var frm = new FrmChapter(_chapterList, _chapterIndex))
-            {
-
-                if (frm.ShowDialog() == DialogResult.OK)
-                {
-                    initForm();
-                }
-            }
-        }
-
-        private void btnLast_Click(object sender, EventArgs e)
-        {
-            if ((_index - 1) >= 0)
-            {
-                File.WriteAllText(_indexTempFile, Convert.ToString(--_index));
-                initForm();
-            }
-            else
-            {
-                MessageBox.Show("当前已经是第一行，再没有啦！");
-            }
-        }
-
-        private void btnNext_Click(object sender, EventArgs e)
-        {
-            if ((_index + 1) < _lines.Length)
-            {
-                File.WriteAllText(_indexTempFile, Convert.ToString(++_index));
-                initForm();
-            }
-            else
-            {
-                MessageBox.Show("当前已经是最后一行，再没有啦！");
-            }
-        }
-
-        private void btnLastChapter_Click(object sender, EventArgs e)
-        {
-            if (_chapterList.IndexOfKey(_chapterIndex) > 0)
-            {
-                _chapterIndex = _chapterList.Keys[_chapterList.IndexOfKey(_chapterIndex) - 1];
-                File.WriteAllText(_indexTempFile, Convert.ToString(_chapterIndex));
-                initForm();
-            }
-            else
-            {
-                MessageBox.Show("当前已经是第一章，再没有啦！");
-            }
-
-        }
-
-        private void btnNextChapter_Click(object sender, EventArgs e)
-        {
-            if (_chapterList.IndexOfKey(_chapterIndex) < _chapterList.Count - 1)
-            {
-                _chapterIndex = _chapterList.Keys[_chapterList.IndexOfKey(_chapterIndex) + 1];
-                File.WriteAllText(_indexTempFile, Convert.ToString(_chapterIndex));
-                initForm();
-            }
-            else
-            {
-                MessageBox.Show("当前已经是最后一章，再没有啦！");
-            }
-        }
+        #endregion
     }
 }
