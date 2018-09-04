@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace 碎碎念
+namespace Chatter
 {
     static class Program
     {

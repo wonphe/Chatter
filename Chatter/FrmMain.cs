@@ -5,10 +5,9 @@ using System.Windows.Forms;
 using System.Web;
 using System.Configuration;
 using System.Text.RegularExpressions;
-using Chatter;
 using System.Collections.Generic;
 
-namespace 碎碎念
+namespace Chatter
 {
     public partial class FrmMain : Form
     {

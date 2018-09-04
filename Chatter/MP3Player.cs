@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace 碎碎念
+namespace Chatter
 {
     class MP3Player
     {

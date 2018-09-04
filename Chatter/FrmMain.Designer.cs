@@ -1,4 +1,4 @@
-﻿namespace 碎碎念
+﻿namespace Chatter
 {
     partial class FrmMain
     {
