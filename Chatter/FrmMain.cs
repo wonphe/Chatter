@@ -6,6 +6,7 @@ using System.Web;
 using System.Configuration;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Chatter
 {
@@ -54,7 +55,7 @@ namespace Chatter
                 }
             }
 
-            _lines = File.ReadAllLines(_fileName);
+            _lines = File.ReadAllLines(_fileName, FileEncoder.GetType(_fileName));
 
             // 加载目录
             _chapterList = new SortedList<int, string>();
@@ -168,7 +169,7 @@ namespace Chatter
 
             txtText.Text = _lines[_index];
 
-            if (_chapterList.Keys[0] <= _index)
+            if (_chapterList.Count > 0 && _chapterList.Keys[0] <= _index)
             {
                 _chapterIndex = _index;
                 while (!_chapterList.ContainsKey(_chapterIndex))
