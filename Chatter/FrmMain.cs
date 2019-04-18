@@ -7,6 +7,8 @@ using System.Configuration;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Chatter
 {
@@ -17,6 +19,7 @@ namespace Chatter
         private string _path = "./temp.mp3";
         private string _indexTempFile = "./temp.ssn";
         private string _fileName = "./temp.txt";
+        private string _token;
         private int _index;
         private int _chapterIndex;
         private SortedList<int, string> _chapterList;
@@ -72,7 +75,25 @@ namespace Chatter
                 }
             }
 
+            GetToken();
+
             initForm();
+        }
+
+        private void GetToken()
+        {
+            var API_KEY = ConfigurationManager.AppSettings["API_KEY"].Trim();
+            var SECRET_KEY = ConfigurationManager.AppSettings["SECRET_KEY"].Trim();
+            string url = $"https://openapi.baidu.com/oauth/2.0/token?grant_type=client_credentials&client_id={API_KEY}&client_secret={SECRET_KEY}";
+            var request = WebRequest.Create(url);
+            request.Timeout = 10000;
+            var stream = request.GetResponse().GetResponseStream();
+            if (stream != null)
+            {
+                var response = new StreamReader(stream, Encoding.UTF8).ReadToEnd();
+                var json = (JObject)JsonConvert.DeserializeObject(response);
+                _token = (string)json["access_token"];
+            }
         }
 
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
@@ -213,12 +234,12 @@ namespace Chatter
             // string API_KEY = ConfigurationManager.AppSettings["API_KEY"].Trim();
             // string SECRET_KEY = ConfigurationManager.AppSettings["SECRET_KEY"].Trim();
             // token获得方式： https://openapi.baidu.com/oauth/2.0/token?grant_type=client_credentials&client_id={API_KEY}&client_secret={SECRET_KEY}
-            string token = ConfigurationManager.AppSettings["token"].Trim();
+            //string token = ConfigurationManager.AppSettings["token"].Trim();
             string vol = ConfigurationManager.AppSettings["vol"].Trim();    // 音量，取值0-15，默认为5中音量
             string per = ConfigurationManager.AppSettings["per"].Trim();    // 发音人选择, 0为女声，1为男声，3为情感合成-度逍遥，4为情感合成-度丫丫，默认为普通女
             string spd = ConfigurationManager.AppSettings["spd"].Trim();    // 语速，取值0-9，默认为5中语速
             string pit = ConfigurationManager.AppSettings["pit"].Trim();    // 音调，取值0-9，默认为5中语调
-            string url = $"https://tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=abcdxxx&tok={token}&tex={text}&vol={vol}&per={per}&spd={spd}&pit={pit}";
+            string url = $"https://tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=abcdxxx&tok={_token}&tex={text}&vol={vol}&per={per}&spd={spd}&pit={pit}";
             DownLoadFiles(url, _path);
             _player = new MP3Player();
             _player.FileName = _path;
